@@ -85,6 +85,9 @@ class _SumaryScreenState extends State<SumaryScreen> {
           StaggeredTile.extent(2, 300.0),
           StaggeredTile.extent(2, 150.0),
           StaggeredTile.extent(2, 150.0),
+          StaggeredTile.extent(2, 150.0),
+          StaggeredTile.extent(2, 150.0),
+          StaggeredTile.extent(2, 150.0),
         ],
       )),
     );
