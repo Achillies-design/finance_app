@@ -58,13 +58,16 @@ class _SumaryScreenState extends State<SumaryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Point Five Capital'),
+      ),
       body: Center(
           child: StaggeredGridView.count(
         crossAxisCount: 4,
         crossAxisSpacing: 12.0,
         mainAxisSpacing: 12.0,
         children: <Widget>[
-          MyItems(Icons.graphic_eq, 'Total Income', 0xFFed622b),
+          MyItems(Icons.graphic_eq, 'Total Investment', 0xFFed622b),
           MyItems(Icons.bookmark_add, 'Add Fund', 0xFFff3266),
           MyItems(Icons.notifications, 'Notifications', 0xFF3399fe),
           MyItems(Icons.attach_money, 'Balance', 0xFF26cb3c),
