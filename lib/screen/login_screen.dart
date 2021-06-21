@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:finance_app/data/api.dart';
+import 'package:finance_app/model/User.dart';
 import 'package:finance_app/screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'home_screen.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,6 +15,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: <Widget>[
                     TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(
@@ -65,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 20.0,
                     ),
                     TextField(
+                      controller: passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         labelStyle: TextStyle(
@@ -105,12 +115,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         elevation: 7.0,
                         child: GestureDetector(
                           onTap: () {
-                            print('log in pressed');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()),
-                            );
+                            print(emailController.text);
+                            Future<User> user = Apis.login(
+                                emailController.text, passwordController.text);
+
+                            user.then((value) => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()),
+                                  )
+                                });
                           },
                           child: Center(
                             child: Text(
@@ -256,5 +271,25 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<List<dynamic>> getAlbum() async {
+    final response = await http.get(
+        Uri.parse('https://jsonplaceholder.typicode.com/albums'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      //return Album.fromJson(jsonDecode(response.body));
+      List<dynamic> values = new List<dynamic>();
+      values = json.decode(response.body);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to create album.');
+    }
   }
 }
